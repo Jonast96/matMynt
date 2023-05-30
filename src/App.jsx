@@ -2,6 +2,7 @@ import "./index.css";
 import React from "react";
 import Nav from "./components/Nav";
 import Header from "./components/Header";
+import Main from "./components/Main";
 
 function App() {
   return (
@@ -9,7 +10,9 @@ function App() {
       <header className="px-4">
         <Header />
       </header>
-      <main className="px-4"></main>
+      <main id="main" className="px-4">
+        <Main />
+      </main>
       <footer>
         <Nav />
       </footer>
