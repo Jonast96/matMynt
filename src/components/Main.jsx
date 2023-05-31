@@ -95,9 +95,16 @@ function Main() {
             },
             content: {
               color: "lightsteelblue",
-              backgroundColor: "black",
+              backgroundColor: "#EFEFEF",
               maxWidth: "30rem",
               margin: "4rem auto",
+              color: "#000",
+              top: "35%",
+              left: "50%",
+              right: "auto",
+              bottom: "auto",
+              marginRight: "-50%",
+              transform: "translate(-50%, -50%)",
             },
           }}
           isOpen={modalIsOpen}
