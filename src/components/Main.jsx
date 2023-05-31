@@ -34,7 +34,7 @@ function Main() {
       const code = result.codeResult.code;
       console.log("Scanned barcode:", code);
       test(`products/ean/${code}`);
-      // stopScanner();
+      stopScanner();
     });
 
     return () => {
@@ -123,9 +123,9 @@ function Main() {
             {stores.map((store) => {
               return (
                 <div className="flex justify-between border-b-2 border-white pb-1">
-                  <img className=" h-8 me-2" src={store.store.logo} alt="" />
-                  <h3>{store.store.name}</h3>
-                  <h3>{store.current_price.price}kr</h3>
+                  <img className=" h-8 me-2" src={store?.store?.logo} alt="" />
+                  <h3>{store?.store?.name}</h3>
+                  <h3>{store?.current_price?.price}kr</h3>
                 </div>
               );
             })}
