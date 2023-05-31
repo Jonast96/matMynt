@@ -7,6 +7,7 @@ function Main() {
   const key = "NBT65Ohkkh5oIVNrbAfFuEO6ftZzZhzHWDdsRXNb";
   const [productName, setProductName] = useState("");
   const [stores, setStores] = useState([]);
+  const [barcode, setBarcode] = useState("");
   const barcodeScannerRef = useRef();
 
   useEffect(() => {
@@ -30,16 +31,13 @@ function Main() {
       }
     );
 
-    Quagga.onDetected(async function (result) {
+    Quagga.onDetected(function (result) {
       const code = result.codeResult.code;
+      setBarcode(code);
       console.log("Scanned barcode:", code);
-      try {
-        await test(`products/ean/${code}`);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        stopScanner();
-      }
+      test(`products/ean/${code}`);
+      stopScanner();
+      openModal();
     });
 
     return () => {
@@ -122,12 +120,15 @@ function Main() {
           contentLabel="Info"
         >
           <h2 className=" text-4xl">
-            {productName ? productName : "Ingen info tilgjengelig"}
+            {productName ? productName : "Produkt ikke funnet"}
           </h2>
           <div className="flex flex-col gap-2 ">
-            {stores.map((store) => {
+            {stores.map((store, index) => {
               return (
-                <div className="flex justify-between border-b-2 border-white pb-1">
+                <div
+                  key={index}
+                  className="flex justify-between border-b-2 border-white pb-1"
+                >
                   <img className=" h-8 me-2" src={store?.store?.logo} alt="" />
                   <h3>{store?.store?.name}</h3>
                   <h3>{store?.current_price?.price}kr</h3>
