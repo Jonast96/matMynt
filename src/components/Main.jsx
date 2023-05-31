@@ -2,7 +2,6 @@ import Quagga from "https://cdn.skypack.dev/@ericblade/quagga2";
 import React, { useEffect, useRef, useState } from "react";
 import ReactModal from "react-modal";
 import "./main.scss";
-import { data } from "autoprefixer";
 
 function Main() {
   const key = "NBT65Ohkkh5oIVNrbAfFuEO6ftZzZhzHWDdsRXNb";
@@ -35,7 +34,7 @@ function Main() {
       const code = result.codeResult.code;
       console.log("Scanned barcode:", code);
       test(`products/ean/${code}`);
-      stopScanner();
+      // stopScanner();
     });
 
     return () => {
@@ -53,16 +52,11 @@ function Main() {
         },
       });
 
-      if (response.status === 404) {
-        alert("Fant ikke produktet");
-        return;
-      } else {
-        const data = await response.json();
-        console.log(data);
-        setProductName(data.data.products[0].name);
-        setStores(data.data.products);
-        console.log(stores);
-      }
+      const data = await response.json();
+      console.log(data);
+      setProductName(data.data.products[0].name);
+      setStores(data.data.products);
+      console.log(stores);
     } catch (error) {
       console.error(error);
       alert(error);
@@ -95,7 +89,7 @@ function Main() {
         <button
           onClick={() => {
             openModal();
-            test(`products/ean/5900951027307`);
+            test(`products/ean/5060337502238`);
           }}
         >
           Open Modal
