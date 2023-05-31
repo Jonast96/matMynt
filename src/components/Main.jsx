@@ -54,8 +54,12 @@ function Main() {
 
       const data = await response.json();
       console.log(data);
-      setProductName(data.data.products[0].name);
-      setStores(data.data.products);
+      if (data.data && data.data.products && data.data.products[0]) {
+        setProductName(data.data.products[0].name);
+        setStores(data.data.products);
+      } else {
+        console.error("Product data is missing or malformed.");
+      }
       console.log(stores);
     } catch (error) {
       console.error(error);
