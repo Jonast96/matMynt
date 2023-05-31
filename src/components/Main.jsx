@@ -106,7 +106,6 @@ function Main() {
               backgroundColor: "rgba(0, 0, 0, 0.75)",
             },
             content: {
-              color: "lightsteelblue",
               backgroundColor: "#EFEFEF",
               maxWidth: "30rem",
               margin: "4rem auto",
