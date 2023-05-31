@@ -1,13 +1,23 @@
 import Quagga from "https://cdn.skypack.dev/@ericblade/quagga2";
 import React, { useEffect, useRef, useState } from "react";
+import ReactModal from "react-modal";
 
 function Main() {
+  const key = "NBT65Ohkkh5oIVNrbAfFuEO6ftZzZhzHWDdsRXNb";
   const [productName, setProductName] = useState("");
   const [productCalories, setProductCalories] = useState("");
-  const key = "NBT65Ohkkh5oIVNrbAfFuEO6ftZzZhzHWDdsRXNb";
-
   const barcodeScannerRef = useRef();
-
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      width: "30rem",
+    },
+  };
   useEffect(() => {
     Quagga.init(
       {
@@ -61,6 +71,7 @@ function Main() {
       console.log(data);
       setProductName(data.data.products[0].name);
       setProductCalories(data.data.nutrition[0].amount);
+      setIsOpen(true);
     } catch (error) {
       console.error(error);
       alert(error);
@@ -71,13 +82,37 @@ function Main() {
     Quagga.stop();
   }
 
+  ReactModal.setAppElement("#root");
+
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
   return (
-    <div ref={barcodeScannerRef} className="w-full h-64">
-      <button onClick={() => test(`products/ean/5900951027307`)}>
-        test it
-      </button>
-      <p>{productName}</p>
-      <p>{productCalories}</p>
+    <div ref={barcodeScannerRef}>
+      <div className=" max-w-lg">
+        <button onClick={openModal}>Open Modal</button>
+        <ReactModal
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          style={customStyles}
+          contentLabel="Info"
+        >
+          <h2 className=" text-4xl">
+            {productName ? productName : "Ingen info tilgjengelig"}
+          </h2>
+          <div>
+            {productCalories ? productCalories : "Ingen info tilgjengelig"}
+          </div>
+          <button onClick={closeModal}>close</button>
+        </ReactModal>
+      </div>
     </div>
   );
 }
