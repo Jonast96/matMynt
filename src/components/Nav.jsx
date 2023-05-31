@@ -3,9 +3,11 @@ import { faBarcode, faBars } from "@fortawesome/free-solid-svg-icons";
 
 function Nav() {
   return (
-    <nav className="p-5 bg-white flex justify-between">
+    <nav className="p-5 bg-white w-full flex justify-between">
       <div></div>
-      <FontAwesomeIcon color="black" size="2xl" icon={faBarcode} />
+      <div className="">
+        <FontAwesomeIcon color="black" size="2xl" icon={faBarcode} />
+      </div>
       <FontAwesomeIcon color="black" size="2xl" icon={faBars} />
     </nav>
   );

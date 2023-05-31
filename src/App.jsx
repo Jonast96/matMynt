@@ -6,14 +6,14 @@ import Main from "./components/Main";
 
 function App() {
   return (
-    <div className="mx-auto min-h-screen  bg-primary text-white max-w-lg flex flex-col justify-between pt-2">
+    <div className="mx-auto min-h-screen  bg-primary text-white max-w-lg pt-2  flex flex-col justify-between">
       <header className="px-4">
         <Header />
       </header>
       <main id="main" className="px-4">
         <Main />
       </main>
-      <footer>
+      <footer className="">
         <Nav />
       </footer>
     </div>

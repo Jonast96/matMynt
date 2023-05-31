@@ -1,11 +1,13 @@
 import Quagga from "https://cdn.skypack.dev/@ericblade/quagga2";
 import React, { useEffect, useRef, useState } from "react";
 import ReactModal from "react-modal";
+import "./main.scss";
+import { data } from "autoprefixer";
 
 function Main() {
   const key = "NBT65Ohkkh5oIVNrbAfFuEO6ftZzZhzHWDdsRXNb";
   const [productName, setProductName] = useState("");
-  const [productCalories, setProductCalories] = useState("");
+  const [stores, setStores] = useState([]);
   const barcodeScannerRef = useRef();
 
   useEffect(() => {
@@ -51,17 +53,16 @@ function Main() {
         },
       });
 
-      if (!response.ok) {
-        console.log(response);
-        console.error(`Error: ${response.status} - ${response.statusText}`);
+      if (response.status === 404) {
+        alert("Fant ikke produktet");
         return;
+      } else {
+        const data = await response.json();
+        console.log(data);
+        setProductName(data.data.products[0].name);
+        setStores(data.data.products);
+        console.log(stores);
       }
-
-      const data = await response.json();
-      console.log(data);
-      setProductName(data.data.products[0].name);
-      setProductCalories(data.data.nutrition[0].amount);
-      setIsOpen(true);
     } catch (error) {
       console.error(error);
       alert(error);
@@ -85,9 +86,20 @@ function Main() {
   }
 
   return (
-    <div ref={barcodeScannerRef}>
+    <div>
+      <div
+        className="rounded-xl overflow-hidden videoContainer"
+        ref={barcodeScannerRef}
+      ></div>
       <div className=" max-w-lg">
-        <button onClick={openModal}>Open Modal</button>
+        <button
+          onClick={() => {
+            openModal();
+            test(`products/ean/5900951027307`);
+          }}
+        >
+          Open Modal
+        </button>
         <ReactModal
           style={{
             overlay: {
@@ -114,10 +126,23 @@ function Main() {
           <h2 className=" text-4xl">
             {productName ? productName : "Ingen info tilgjengelig"}
           </h2>
-          <div>
-            {productCalories ? productCalories : "Ingen info tilgjengelig"}
+          <div className="flex flex-col gap-2 ">
+            {stores.map((store) => {
+              return (
+                <div className="flex justify-between border-b-2 border-white pb-1">
+                  <img className=" h-8 me-2" src={store.store.logo} alt="" />
+                  <h3>{store.store.name}</h3>
+                  <h3>{store.current_price.price}kr</h3>
+                </div>
+              );
+            })}
           </div>
-          <button onClick={closeModal}>close</button>
+          <button
+            className="bg-secondary text-primary font-bold mt-4 py-2 px-4 rounded"
+            onClick={closeModal}
+          >
+            close
+          </button>
         </ReactModal>
       </div>
     </div>
