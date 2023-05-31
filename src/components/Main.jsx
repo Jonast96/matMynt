@@ -7,17 +7,7 @@ function Main() {
   const [productName, setProductName] = useState("");
   const [productCalories, setProductCalories] = useState("");
   const barcodeScannerRef = useRef();
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      width: "30rem",
-    },
-  };
+
   useEffect(() => {
     Quagga.init(
       {
@@ -99,9 +89,19 @@ function Main() {
       <div className=" max-w-lg">
         <button onClick={openModal}>Open Modal</button>
         <ReactModal
+          style={{
+            overlay: {
+              backgroundColor: "rgba(0, 0, 0, 0.75)",
+            },
+            content: {
+              color: "lightsteelblue",
+              backgroundColor: "black",
+              maxWidth: "30rem",
+              margin: "4rem auto",
+            },
+          }}
           isOpen={modalIsOpen}
           onRequestClose={closeModal}
-          style={customStyles}
           contentLabel="Info"
         >
           <h2 className=" text-4xl">
