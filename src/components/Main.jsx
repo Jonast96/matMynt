@@ -30,11 +30,16 @@ function Main() {
       }
     );
 
-    Quagga.onDetected(function (result) {
+    Quagga.onDetected(async function (result) {
       const code = result.codeResult.code;
       console.log("Scanned barcode:", code);
-      test(`products/ean/${code}`);
-      stopScanner();
+      try {
+        await test(`products/ean/${code}`);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        stopScanner();
+      }
     });
 
     return () => {
