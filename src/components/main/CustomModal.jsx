@@ -11,6 +11,15 @@ function Modal({
 }) {
   const storesToShow = showAll ? stores : stores.slice(0, 4);
 
+  function formatDate(isoDate) {
+    let date = new Date(isoDate);
+    let day = String(date.getDate()).padStart(2, "0");
+    let month = String(date.getMonth() + 1).padStart(2, "0");
+    let year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  }
+
   return (
     <ReactModal
       style={{
@@ -29,7 +38,7 @@ function Modal({
       onRequestClose={onRequestClose}
       contentLabel="Info"
     >
-      <div className="mb-4 flex ">
+      <div className="mb-4 flex items-center justify-around">
         <h2 className=" text-xl">{product.name ? product.name : "..."}</h2>
         <img className="w-12 " src={product.image} alt="" />
       </div>
@@ -37,15 +46,23 @@ function Modal({
         {storesToShow.map((store, index) => (
           <div
             key={index}
-            className="flex justify-between border-b-2 border-white pb-1"
+            className="flex justify-between items-center border-b-2 border-white pb-1"
           >
             <img className=" h-8 me-2" src={store?.store?.logo} alt="" />
             <h3>{store?.store?.name}</h3>
-            <h3>{store?.current_price?.price}kr</h3>
+            <div className=" text-center">
+              <h3>{store?.current_price?.price}kr</h3>
+              <h3 className=" text-sm">
+                {formatDate(store?.current_price.date)}
+              </h3>
+            </div>
           </div>
         ))}
         {!showAll && (
           <button onClick={() => setShowAll(true)}>Show More</button>
+        )}
+        {showAll && (
+          <button onClick={() => setShowAll(false)}>Show Less</button>
         )}
       </div>
       <button

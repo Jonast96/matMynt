@@ -10,6 +10,7 @@ async function fetchProductData(url) {
     });
 
     const data = await response.json();
+    console.log(data);
 
     if (data?.data?.products) {
       const sortedStores = data?.data?.products?.sort((a, b) => {
