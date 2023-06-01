@@ -8,7 +8,6 @@ function Main() {
   const [product, setProduct] = useState("");
   const [stores, setStores] = useState([]);
   const [showAll, setShowAll] = useState(false); // New state variable
-  const [barcode, setBarcode] = useState("");
   const barcodeScannerRef = useRef();
 
   useEffect(() => {
@@ -41,7 +40,6 @@ function Main() {
 
     Quagga.onDetected(function (result) {
       const code = result.codeResult.code;
-      setBarcode(code);
       console.log("Scanned barcode:", code);
       test(`products/ean/${code}`);
       stopScanner();
