@@ -5,12 +5,20 @@ import "./main.scss";
 
 function Main() {
   const key = "NBT65Ohkkh5oIVNrbAfFuEO6ftZzZhzHWDdsRXNb";
-  const [productName, setProductName] = useState("");
+  const [product, setProduct] = useState("");
   const [stores, setStores] = useState([]);
+  const [showAll, setShowAll] = useState(false); // New state variable
   const [barcode, setBarcode] = useState("");
   const barcodeScannerRef = useRef();
 
   useEffect(() => {
+    startScanner();
+    return () => {
+      stopScanner();
+    };
+  }, []);
+
+  const startScanner = () => {
     Quagga.init(
       {
         inputStream: {
@@ -39,12 +47,12 @@ function Main() {
       stopScanner();
       openModal();
     });
+  };
 
-    return () => {
-      Quagga.stop();
-      Quagga.offDetected();
-    };
-  }, []);
+  const stopScanner = () => {
+    Quagga.stop();
+    Quagga.offDetected();
+  };
 
   async function test(url) {
     try {
@@ -57,17 +65,18 @@ function Main() {
 
       const data = await response.json();
       console.log(data);
-      setProductName(data?.data?.products?.[0]?.name || "");
-      setStores(data?.data?.products || []);
-      console.log(stores);
+      setProduct(data?.data?.products?.[0] || "");
+
+      const sortedStores = data?.data?.products?.sort((a, b) => {
+        return a?.current_price?.price - b?.current_price?.price;
+      });
+
+      setStores(sortedStores || []);
+      console.log(sortedStores);
     } catch (error) {
       console.error(error);
       alert(error);
     }
-  }
-
-  function stopScanner() {
-    Quagga.stop();
   }
 
   ReactModal.setAppElement("#root");
@@ -80,7 +89,10 @@ function Main() {
 
   function closeModal() {
     setIsOpen(false);
+    setShowAll(false);
+    startScanner();
   }
+  const storesToShow = showAll ? stores : stores.slice(0, 4);
 
   return (
     <div>
@@ -107,23 +119,19 @@ function Main() {
               maxWidth: "30rem",
               margin: "4rem auto",
               color: "#000",
-              top: "35%",
-              left: "50%",
-              right: "auto",
-              bottom: "auto",
-              marginRight: "-50%",
-              transform: "translate(-50%, -50%)",
             },
           }}
           isOpen={modalIsOpen}
+          shouldCloseOnOverlayClick={true}
           onRequestClose={closeModal}
           contentLabel="Info"
         >
-          <h2 className=" text-4xl">
-            {productName ? productName : "Produkt ikke funnet"}
-          </h2>
+          <div className="mb-4 flex ">
+            <h2 className=" text-xl">{product.name ? product.name : "..."}</h2>
+            <img className="w-12 " src={product.image} alt="" />
+          </div>
           <div className="flex flex-col gap-2 ">
-            {stores.map((store, index) => {
+            {storesToShow.map((store, index) => {
               return (
                 <div
                   key={index}
@@ -135,6 +143,9 @@ function Main() {
                 </div>
               );
             })}
+            {!showAll && (
+              <button onClick={() => setShowAll(true)}>Show More</button>
+            )}
           </div>
           <button
             className="bg-secondary text-primary font-bold mt-4 py-2 px-4 rounded"
