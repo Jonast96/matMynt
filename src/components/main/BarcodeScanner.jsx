@@ -1,30 +1,52 @@
 import Quagga from "https://cdn.skypack.dev/@ericblade/quagga2";
-import { useState, useRef, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
-function BarcodeScanner({ onDetected }) {
+function BarcodeScanner({ onDetected, running }) {
   const barcodeScannerRef = useRef();
 
   useEffect(() => {
-    startScanner();
+    if (running) {
+      startScanner();
+    } else {
+      stopScanner();
+    }
     return () => {
       stopScanner();
     };
-  }, []);
+  }, [running]);
 
   const startScanner = () => {
-    /* Start scanner code */
+    Quagga.init(
+      {
+        inputStream: {
+          name: "Live",
+          type: "LiveStream",
+          target: barcodeScannerRef.current,
+        },
+        decoder: {
+          readers: ["ean_reader", "upc_reader", "code_128_reader"],
+        },
+      },
+      function (err) {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        Quagga.start();
+      }
+    );
+
+    Quagga.onDetected(function (result) {
+      const code = result.codeResult.code;
+      onDetected(code);
+      Quagga.offDetected();
+      stopScanner();
+    });
   };
 
   const stopScanner = () => {
-    /* Stop scanner code */
+    Quagga.stop();
   };
-
-  Quagga.onDetected(function (result) {
-    /* On detected code */
-    const code = result.codeResult.code;
-    onDetected(code);
-    stopScanner();
-  });
 
   return (
     <div
