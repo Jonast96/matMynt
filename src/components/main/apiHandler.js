@@ -20,6 +20,7 @@ async function fetchProductData(url) {
       return {
         product: data?.data?.products?.[0] || "",
         stores: sortedStores || [],
+        data: data.data || "",
       };
     }
 

@@ -1,4 +1,5 @@
 import ReactModal from "react-modal";
+import { useState } from "react";
 
 ReactModal.setAppElement("#root");
 function Modal({
@@ -8,8 +9,11 @@ function Modal({
   stores,
   showAll,
   setShowAll,
+  data,
 }) {
   const storesToShow = showAll ? stores : stores.slice(0, 4);
+  const [showNutrition, setShowNutrition] = useState(false);
+  const [showAllergens, setShowAllergens] = useState(false);
 
   function formatDate(isoDate) {
     let date = new Date(isoDate);
@@ -59,17 +63,51 @@ function Modal({
           </div>
         ))}
         {!showAll && (
-          <button onClick={() => setShowAll(true)}>Show More</button>
+          <button
+            className="  underline text-primary font-semibold"
+            onClick={() => setShowAll(true)}
+          >
+            Vis Mer
+          </button>
         )}
         {showAll && (
-          <button onClick={() => setShowAll(false)}>Show Less</button>
+          <button
+            className="  underline text-primary font-semibold"
+            onClick={() => setShowAll(false)}
+          >
+            Vis Mindre
+          </button>
         )}
       </div>
+      <div
+        onClick={() => setShowNutrition(!showNutrition)}
+        className="bg-accent rounded p-2 my-3"
+      >
+        <h3 className="underline cursor-pointer text-primary font-semibold ">
+          Næringsinnhold per 100g
+        </h3>
+        {showNutrition ? (
+          <ul>
+            {data?.nutrition?.map((nutrient, index) => (
+              <li key={index}>
+                {nutrient.display_name}: {nutrient.amount} {nutrient.unit}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          ""
+        )}
+      </div>
+      <div className="bg-accent rounded p-2 my-3">
+        <h3 className="underline cursor-pointer text-primary font-semibold">
+          Allergener
+        </h3>
+      </div>
       <button
-        className="bg-secondary text-primary font-bold mt-4 py-2 px-4 rounded"
+        className="bg-secondary text-primary font-bold mt-4 float-right py-2 px-4 rounded"
         onClick={onRequestClose}
       >
-        Close
+        Lukk
       </button>
     </ReactModal>
   );
