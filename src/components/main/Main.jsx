@@ -20,11 +20,11 @@ function Main() {
       setProduct(data.product);
       setStores(data.stores);
       setMainData(data.data);
+      openModal();
     } catch (error) {
       console.error(error);
       alert(error);
     }
-    openModal();
   };
 
   const openModal = () => {

@@ -57,7 +57,7 @@ function Modal({
             <div className=" text-center">
               <h3>{store?.current_price?.price}kr</h3>
               <h3 className=" text-sm">
-                {formatDate(store?.current_price.date)}
+                {formatDate(store?.current_price?.date)}
               </h3>
             </div>
           </div>
