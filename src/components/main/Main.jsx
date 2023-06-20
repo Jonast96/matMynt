@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import BarcodeScanner from "./BarcodeScanner";
 import fetchProductData from "./apiHandler";
 import Modal from "./CustomModal";
+import "./main.scss";
 
 function Main() {
-  const [barcode, setBarcode] = useState("");
   const [product, setProduct] = useState("");
   const [stores, setStores] = useState([]);
   const [showAll, setShowAll] = useState(false);
@@ -13,7 +13,6 @@ function Main() {
   const [mainData, setMainData] = useState({});
 
   const onDetected = async (code) => {
-    setBarcode(code);
     setScannerRunning(false);
     try {
       const data = await fetchProductData(`products/ean/${code}`);
@@ -23,7 +22,9 @@ function Main() {
       openModal();
     } catch (error) {
       console.error(error);
-      alert(error);
+      alert(
+        "Ingen resultater, prøv igjen eller skriv inn produktet du leter etter i søkefeltet"
+      );
     }
   };
 

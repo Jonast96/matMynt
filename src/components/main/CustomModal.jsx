@@ -1,5 +1,7 @@
 import ReactModal from "react-modal";
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
 ReactModal.setAppElement("#root");
 function Modal({
@@ -35,6 +37,7 @@ function Modal({
           maxWidth: "30rem",
           margin: "4rem auto",
           color: "#000",
+          scrollbarGutter: "stable both-edges",
         },
       }}
       isOpen={isOpen}
@@ -42,73 +45,86 @@ function Modal({
       onRequestClose={onRequestClose}
       contentLabel="Info"
     >
-      <div className="mb-4 flex items-center justify-around">
-        <h2 className=" text-xl">{product.name ? product.name : "..."}</h2>
-        <img className="w-12 " src={product.image} alt="" />
-      </div>
-      <div className="flex flex-col gap-2 ">
-        {storesToShow.map((store, index) => (
-          <div
-            key={index}
-            className="flex justify-between items-center border-b-2 border-white pb-1"
-          >
-            <img className=" h-8 me-2" src={store?.store?.logo} alt="" />
-            <h3>{store?.store?.name}</h3>
-            <div className=" text-center">
-              <h3>{store?.current_price?.price}kr</h3>
-              <h3 className=" text-sm">
-                {formatDate(store?.current_price?.date)}
-              </h3>
+      <div className="customModal">
+        <div className="mb-4 flex items-center justify-around">
+          <h2 className=" text-xl testing">
+            {product.name ? product.name : "..."}
+          </h2>
+          <img className="w-12 " src={product.image} alt="" />
+        </div>
+        <div className="flex flex-col gap-2 ">
+          {storesToShow.map((store, index) => (
+            <div
+              key={index}
+              className="flex justify-between items-center border-b-2 border-white pb-1"
+            >
+              <img className=" h-8 me-2" src={store?.store?.logo} alt="" />
+              <h3>{store?.store?.name}</h3>
+              <div className=" text-center">
+                <h3>{store?.current_price?.price}kr</h3>
+                <h3 className=" text-sm">
+                  {formatDate(store?.current_price?.date)}
+                </h3>
+              </div>
             </div>
+          ))}
+          {!showAll && (
+            <button
+              className="  underline text-primary font-semibold"
+              onClick={() => setShowAll(true)}
+            >
+              Vis Mer
+            </button>
+          )}
+          {showAll && (
+            <button
+              className="  underline text-primary font-semibold"
+              onClick={() => setShowAll(false)}
+            >
+              Vis Mindre
+            </button>
+          )}
+        </div>
+        <div
+          onClick={() => setShowNutrition(!showNutrition)}
+          className="bg-white rounded p-2 mt-4"
+        >
+          <div className="flex justify-between items-center">
+            <h3 className="underline cursor-pointer text-primary font-semibold ">
+              Næringsinnhold per 100g
+            </h3>
+            <FontAwesomeIcon icon={faArrowDown} />
           </div>
-        ))}
-        {!showAll && (
-          <button
-            className="  underline text-primary font-semibold"
-            onClick={() => setShowAll(true)}
-          >
-            Vis Mer
-          </button>
-        )}
-        {showAll && (
-          <button
-            className="  underline text-primary font-semibold"
-            onClick={() => setShowAll(false)}
-          >
-            Vis Mindre
-          </button>
-        )}
+          {showNutrition ? (
+            <ul className="mt-3">
+              {data?.nutrition?.map((nutrient, index) => (
+                <li key={index} className="mb-1">
+                  {nutrient.display_name}:{" "}
+                  <span className="  font-semibold">
+                    {nutrient.amount} {nutrient.unit}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            ""
+          )}
+        </div>
+        <div className="bg-white rounded p-2">
+          <div className="flex justify-between items-center">
+            <h3 className="underline cursor-pointer text-primary font-semibold ">
+              Allergener{" "}
+            </h3>
+            <FontAwesomeIcon icon={faArrowDown} />
+          </div>
+        </div>
+        <button
+          className="bg-secondary text-primary font-bold mt-4 float-right py-2 px-4 rounded"
+          onClick={onRequestClose}
+        >
+          Lukk
+        </button>
       </div>
-      <div
-        onClick={() => setShowNutrition(!showNutrition)}
-        className="bg-accent rounded p-2 my-3"
-      >
-        <h3 className="underline cursor-pointer text-primary font-semibold ">
-          Næringsinnhold per 100g
-        </h3>
-        {showNutrition ? (
-          <ul>
-            {data?.nutrition?.map((nutrient, index) => (
-              <li key={index}>
-                {nutrient.display_name}: {nutrient.amount} {nutrient.unit}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          ""
-        )}
-      </div>
-      <div className="bg-accent rounded p-2 my-3">
-        <h3 className="underline cursor-pointer text-primary font-semibold">
-          Allergener
-        </h3>
-      </div>
-      <button
-        className="bg-secondary text-primary font-bold mt-4 float-right py-2 px-4 rounded"
-        onClick={onRequestClose}
-      >
-        Lukk
-      </button>
     </ReactModal>
   );
 }
