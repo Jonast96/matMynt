@@ -35,8 +35,9 @@ function Modal({
         content: {
           backgroundColor: "#EFEFEF",
           maxWidth: "30rem",
-          margin: "4rem auto",
+          margin: "1rem auto",
           color: "#000",
+          height: "fit-content",
           scrollbarGutter: "stable both-edges",
         },
       }}
@@ -46,11 +47,11 @@ function Modal({
       contentLabel="Info"
     >
       <div className="customModal">
-        <div className="mb-4 flex items-center justify-around">
+        <div className="mb-4 flex justify-center items-center gap-4">
+          <img className="w-12 " src={product.image} alt="" />
           <h2 className=" text-xl testing">
             {product.name ? product.name : "..."}
           </h2>
-          <img className="w-12 " src={product.image} alt="" />
         </div>
         <div className="flex flex-col gap-2 ">
           {storesToShow.map((store, index) => (
@@ -90,7 +91,7 @@ function Modal({
           className="bg-white rounded p-2 mt-4"
         >
           <div className="flex justify-between items-center">
-            <h3 className="underline cursor-pointer text-accent font-semibold ">
+            <h3 className="underline cursor-pointer text-secondary font-semibold ">
               Næringsinnhold per 100g
             </h3>
             <FontAwesomeIcon icon={faArrowDown} />
@@ -110,16 +111,36 @@ function Modal({
             ""
           )}
         </div>
-        <div className="bg-white rounded p-2">
+        <div
+          onClick={() => setShowAllergens(!showAllergens)}
+          className="bg-white rounded p-2"
+        >
           <div className="flex justify-between items-center">
-            <h3 className="underline cursor-pointer text-accent font-semibold ">
+            <h3 className="underline cursor-pointer text-secondary font-semibold ">
               Allergener{" "}
             </h3>
             <FontAwesomeIcon icon={faArrowDown} />
           </div>
+          {showAllergens ? (
+            <ul className="mt-3">
+              {data?.allergens?.length > 0
+                ? data?.allergens?.map((allergen, index) => (
+                    <li key={index} className="mb-1">
+                      {allergen.contains === "YES" ? (
+                        <span className="bg-red">{allergen.code}</span>
+                      ) : (
+                        ""
+                      )}
+                    </li>
+                  ))
+                : ""}
+            </ul>
+          ) : (
+            "Det finnes ikke data om allergener for dette produktet"
+          )}
         </div>
         <button
-          className="bg-secondary text-primary font-bold mt-4 float-right py-2 px-4 rounded"
+          className="bg-accent text-white font-bold mt-4 float-right py-2 px-4 rounded"
           onClick={onRequestClose}
         >
           Lukk
