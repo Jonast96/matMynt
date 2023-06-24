@@ -25,6 +25,7 @@ function Main() {
       alert(
         "Ingen resultater, prøv igjen eller skriv inn produktet du leter etter i søkefeltet"
       );
+      setScannerRunning(true);
     }
   };
 
@@ -42,17 +43,7 @@ function Main() {
   return (
     <div>
       <BarcodeScanner onDetected={onDetected} running={isScannerRunning} />
-      <button
-        onClick={async () => {
-          openModal();
-          const data = await fetchProductData(`products/ean/5060337502238`);
-          setProduct(data.product);
-          setStores(data.stores);
-          setMainData(data.data);
-        }}
-      >
-        Open Modal
-      </button>
+
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
