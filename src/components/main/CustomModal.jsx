@@ -26,7 +26,7 @@ function Modal({
     return `${day}/${month}/${year}`;
   }
 
-  let noAllergens = data.allergens.every(
+  let noAllergens = data?.allergens?.every(
     (allergen) => allergen.contains === "NO"
   );
 
