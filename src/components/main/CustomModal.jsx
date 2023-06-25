@@ -117,26 +117,27 @@ function Modal({
         >
           <div className="flex justify-between items-center">
             <h3 className="underline cursor-pointer text-secondary font-semibold ">
-              Allergener{" "}
+              Allergener
             </h3>
             <FontAwesomeIcon icon={faArrowDown} />
           </div>
           {showAllergens ? (
-            <ul className="mt-3">
-              {data?.allergens?.length > 0
-                ? data?.allergens?.map((allergen, index) => (
-                    <li key={index} className="mb-1">
-                      {allergen.contains === "YES" ? (
-                        <span className="bg-red">{allergen.code}</span>
-                      ) : (
-                        ""
-                      )}
-                    </li>
-                  ))
-                : ""}
-            </ul>
+            data?.allergens?.length > 0 ? (
+              <ul className="mt-3">
+                {data?.allergens?.map(
+                  (allergen, index) =>
+                    allergen.contains === "YES" && (
+                      <li key={index} className="mb-1">
+                        {allergen.code}
+                      </li>
+                    )
+                )}
+              </ul>
+            ) : (
+              "Det finnes ikke informasjon på dette produktet"
+            )
           ) : (
-            "Det finnes ikke data om allergener for dette produktet"
+            ""
           )}
         </div>
         <button
