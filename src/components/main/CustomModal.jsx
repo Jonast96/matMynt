@@ -26,6 +26,12 @@ function Modal({
     return `${day}/${month}/${year}`;
   }
 
+  let noAllergens = data.allergens.every(
+    (allergen) => allergen.contains === "NO"
+  );
+
+  console.log(noAllergens);
+
   return (
     <ReactModal
       style={{
@@ -34,10 +40,8 @@ function Modal({
         },
         content: {
           backgroundColor: "#EFEFEF",
-          maxWidth: "30rem",
           margin: "1rem auto",
           color: "#000",
-          height: "fit-content",
           scrollbarGutter: "stable both-edges",
         },
       }}
@@ -124,13 +128,17 @@ function Modal({
           {showAllergens ? (
             data?.allergens?.length > 0 ? (
               <ul className="mt-3">
-                {data?.allergens?.map(
-                  (allergen, index) =>
-                    allergen.contains === "YES" && (
-                      <li key={index} className="mb-1">
-                        {allergen.code}
-                      </li>
-                    )
+                {noAllergens ? (
+                  <li className="mb-1">Ingen allergener</li>
+                ) : (
+                  data?.allergens?.map(
+                    (allergen, index) =>
+                      allergen.contains === "YES" && (
+                        <li key={index} className="mb-1">
+                          {allergen.code}
+                        </li>
+                      )
+                  )
                 )}
               </ul>
             ) : (
