@@ -3,6 +3,16 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+
 ReactModal.setAppElement("#root");
 function Modal({
   isOpen,
@@ -16,6 +26,9 @@ function Modal({
   const storesToShow = showAll ? stores : stores.slice(0, 4);
   const [showNutrition, setShowNutrition] = useState(false);
   const [showAllergens, setShowAllergens] = useState(false);
+  const [showPriceHistory, setShowPriceHistory] = useState(
+    Array(stores.length).fill(false)
+  );
 
   function formatDate(isoDate) {
     let date = new Date(isoDate);
@@ -29,8 +42,6 @@ function Modal({
   let noAllergens = data?.allergens?.every(
     (allergen) => allergen.contains === "NO"
   );
-
-  console.log(noAllergens);
 
   return (
     <ReactModal
@@ -58,21 +69,61 @@ function Modal({
           </h2>
         </div>
         <div className="flex flex-col gap-2 ">
-          {storesToShow.map((store, index) => (
-            <div
-              key={index}
-              className="flex justify-between items-center border-b-2 border-white pb-1"
-            >
-              <img className=" h-8 me-2" src={store?.store?.logo} alt="" />
-              <h3>{store?.store?.name}</h3>
-              <div className=" text-center">
-                <h3>{store?.current_price?.price}kr</h3>
-                <h3 className=" text-sm">
-                  {formatDate(store?.current_price?.date)}
-                </h3>
+          {storesToShow.map((store, index) => {
+            const formattedData = store.price_history.map((item) => ({
+              ...item,
+              date: formatDate(item.date),
+            }));
+
+            return (
+              <div
+                key={index}
+                className="flex justify-between items-center border-b-2 border-white pb-1 flex-wrap"
+                onClick={() => {
+                  const newShowPriceHistory = [...showPriceHistory];
+                  newShowPriceHistory[index] = !newShowPriceHistory[index];
+                  setShowPriceHistory(newShowPriceHistory);
+                }}
+              >
+                <img className=" h-8 me-2" src={store?.store?.logo} alt="" />
+                <h3>{store?.store?.name}</h3>
+                <div className=" text-center">
+                  <h3>{store?.current_price?.price}kr</h3>
+                  <h3 className=" text-sm">
+                    {formatDate(store?.current_price?.date)}
+                  </h3>
+                </div>
+
+                {showPriceHistory[index] && (
+                  <ResponsiveContainer width="100%" height={200}>
+                    <LineChart
+                      width={500}
+                      height={200}
+                      data={formattedData}
+                      syncId="anyId"
+                      margin={{
+                        top: 10,
+                        right: 30,
+                        left: 0,
+                        bottom: 0,
+                      }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="date" />
+                      <YAxis />
+                      <Tooltip />
+                      <Line
+                        type="monotone"
+                        dataKey="price"
+                        stroke="#8884d8"
+                        fill="#8884d8"
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
           {!showAll && (
             <button
               className="  underline text-primary font-semibold"
