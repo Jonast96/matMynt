@@ -1,7 +1,7 @@
 import ReactModal from "react-modal";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
+import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 
 import {
   LineChart,
@@ -30,6 +30,8 @@ function Modal({
     Array(stores.length).fill(false)
   );
 
+  console.log(showPriceHistory);
+
   function formatDate(isoDate) {
     let date = new Date(isoDate);
     let day = String(date.getDate()).padStart(2, "0");
@@ -47,13 +49,32 @@ function Modal({
     <ReactModal
       style={{
         overlay: {
-          backgroundColor: "rgba(0, 0, 0, 0.75)",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          maxWidth: "32rem",
+          margin: "auto",
+          bottom: 0,
+          backgroundColor: "rgba(255, 255, 255, 0.75)",
         },
         content: {
-          backgroundColor: "#EFEFEF",
-          margin: "1rem auto",
-          color: "#000",
-          scrollbarGutter: "stable both-edges",
+          position: "absolute",
+          top: "40px",
+          left: "40px",
+          right: "40px",
+          bottom: "40px",
+          border: "1px solid #ccc",
+          background: "#fff",
+          overflow: "auto",
+          WebkitOverflowScrolling: "touch",
+          borderRadius: "4px",
+          outline: "none",
+          padding: "10px",
+          inset: "0px",
+          width: "90%",
+          margin: "auto",
+          height: "90%",
         },
       }}
       isOpen={isOpen}
@@ -78,48 +99,59 @@ function Modal({
             return (
               <div
                 key={index}
-                className="flex justify-between items-center border-b-2 border-white pb-1 flex-wrap"
-                onClick={() => {
-                  const newShowPriceHistory = [...showPriceHistory];
-                  newShowPriceHistory[index] = !newShowPriceHistory[index];
-                  setShowPriceHistory(newShowPriceHistory);
-                }}
+                className=" border-b-2 border-white pb-1 flex-wrap"
               >
-                <img className=" h-8 me-2" src={store?.store?.logo} alt="" />
-                <h3>{store?.store?.name}</h3>
-                <div className=" text-center">
-                  <h3>{store?.current_price?.price}kr</h3>
-                  <h3 className=" text-sm">
-                    {formatDate(store?.current_price?.date)}
-                  </h3>
+                <div
+                  onClick={() => {
+                    const newShowPriceHistory = [...showPriceHistory];
+                    newShowPriceHistory[index] = !newShowPriceHistory[index];
+                    setShowPriceHistory(newShowPriceHistory);
+                  }}
+                  className="flex justify-between items-center"
+                >
+                  <img className=" h-8 me-2" src={store?.store?.logo} alt="" />
+                  <h3>{store?.store?.name}</h3>
+                  <div className=" text-center">
+                    <h3>{store?.current_price?.price}kr</h3>
+                    <h3 className=" text-sm">
+                      {formatDate(store?.current_price?.date)}
+                    </h3>
+                  </div>
                 </div>
 
                 {showPriceHistory[index] && (
-                  <ResponsiveContainer width="100%" height={200}>
-                    <LineChart
-                      width={500}
-                      height={200}
-                      data={formattedData}
-                      syncId="anyId"
-                      margin={{
-                        top: 10,
-                        right: 30,
-                        left: 0,
-                        bottom: 0,
+                  <>
+                    <ResponsiveContainer width="100%" height={200}>
+                      <LineChart
+                        data={formattedData}
+                        syncId="anyId"
+                        margin={{
+                          top: 10,
+                          right: 30,
+                        }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="date" />
+                        <YAxis />
+                        <Tooltip />
+                        <Line
+                          type="monotone"
+                          dataKey="price"
+                          stroke="#8884d8"
+                          fill="#8884d8"
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                    <FontAwesomeIcon
+                      onClick={() => {
+                        const newShowPriceHistory = [...showPriceHistory];
+                        newShowPriceHistory[index] = false;
+                        setShowPriceHistory(newShowPriceHistory);
                       }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="date" />
-                      <YAxis />
-                      <Tooltip />
-                      <Line
-                        type="monotone"
-                        dataKey="price"
-                        stroke="#8884d8"
-                        fill="#8884d8"
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
+                      className="ms-auto m-2"
+                      icon={faArrowUp}
+                    />
+                  </>
                 )}
               </div>
             );
