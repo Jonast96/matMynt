@@ -30,8 +30,6 @@ function Modal({
     Array(stores.length).fill(false)
   );
 
-  console.log(showPriceHistory);
-
   function formatDate(isoDate) {
     let date = new Date(isoDate);
     let day = String(date.getDate()).padStart(2, "0");
