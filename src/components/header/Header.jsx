@@ -1,28 +1,9 @@
+import { set } from "date-fns";
 import React, { useState } from "react";
 
 function Header() {
   const [search, setSearch] = useState("");
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [deferredPrompt, setDeferredPrompt] = useState(null);
-
-  const handleInstall = () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === "accepted") {
-          console.log("User accepted the installation prompt.");
-        } else {
-          console.log("User dismissed the installation prompt.");
-        }
-        deferredPrompt = null;
-      });
-    }
-  };
-
-  window.addEventListener("beforeinstallprompt", (event) => {
-    event.preventDefault();
-    deferredPrompt = event;
-  });
 
   const tempData = [
     "Apple",
@@ -42,15 +23,8 @@ function Header() {
 
   return (
     <>
-      <div className="flex justify-between">
-        <h1 className="font-bold text-4xl text-accent">MatMynt</h1>
-        <button
-          onClick={handleInstall}
-          className="py-1 px-3 font-semibold bg-accent rounded hover:bg-secondary"
-        >
-          LAST NED
-        </button>
-      </div>
+      <h1 className="font-bold text-4xl text-accent">MatMynt</h1>
+
       <div className="text-center mt-24">
         <h4 className="text-2xl font-medium">Velkommen til MatMynt</h4>
         <p className="text-xl mt-2">Din guide til smartere matshopping</p>
@@ -81,7 +55,10 @@ function Header() {
               <div className="absolute z-10  w-full bg-accent text-black shadow-lg  py-2">
                 {tempData.map((item, index) => (
                   <div
-                    onClick={() => setDropdownVisible(false)}
+                    onClick={() => {
+                      setSearch("");
+                      setDropdownVisible(false);
+                    }}
                     key={index}
                     className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                   >
