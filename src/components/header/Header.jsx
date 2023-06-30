@@ -43,7 +43,7 @@ function Header() {
         onSubmit={(e) => {
           e.preventDefault();
         }}
-        className="searchContainer flex justify-center gap-2  mx-auto mt-3"
+        className="searchContainer w-3/4  mx-auto mt-3"
       >
         <div>
           <input
@@ -53,27 +53,28 @@ function Header() {
             value={search}
             onChange={handleChange}
             placeholder="Søk etter produkt..."
-            className=" bg-primary p-1 text-lg   text-white border-solid border-b-2 border-white focus:outline-none focus:border-accent"
+            className=" bg-primary p-1 text-lg  w-full  text-white border-solid border-b-2 border-white focus:outline-none focus:border-accent"
           />
-          <button type="submit" className="bg-accent px-2 rounded  text-lg">
-            Søk
-          </button>
 
           {dropdownVisible && (
             <div className="relative">
               <div className="absolute z-10  w-full bg-accent text-black shadow-lg  py-2">
-                {searchResults.map((item, index) => (
-                  <div
-                    onClick={() => {
-                      setSearch("");
-                      setDropdownVisible(false);
-                    }}
-                    key={index}
-                    className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
-                  >
-                    {item.name}
-                  </div>
-                ))}
+                {searchResults?.length > 0
+                  ? searchResults?.map((item, index) => (
+                      <div
+                        onClick={() => {
+                          setSearch("");
+                          setDropdownVisible(false);
+                        }}
+                        key={index}
+                        className="px-4 py-2 hover:bg-gray-200 cursor-pointer flex justify-between items-center gap-2 text-center"
+                      >
+                        <img src={item.image} alt="" className="w-4" />
+                        <p>{item.name}</p>
+                        <p>{item.current_price},-</p>
+                      </div>
+                    ))
+                  : "Ingen resultater"}
               </div>
             </div>
           )}
