@@ -23,7 +23,7 @@ function Modal({
   setShowAll,
   data,
 }) {
-  const storesToShow = showAll ? stores : stores.slice(0, 4);
+  const storesToShow = showAll ? stores : stores?.slice(0, 4);
   const [showNutrition, setShowNutrition] = useState(false);
   const [showAllergens, setShowAllergens] = useState(false);
   const [showPriceHistory, setShowPriceHistory] = useState(

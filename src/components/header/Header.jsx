@@ -1,11 +1,27 @@
 import React, { useState, useCallback } from "react";
 import { debounce } from "lodash";
+import Modal from "../main/CustomModal";
 
 function Header() {
   const [search, setSearch] = useState("");
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
+
+  const [mainData, setMainData] = useState({});
+  const [stores, setStores] = useState([]);
+  const [product, setProduct] = useState("");
+  const [showAll, setShowAll] = useState(false);
+  const [modalIsOpen, setIsOpen] = useState(false);
   const key = "NBT65Ohkkh5oIVNrbAfFuEO6ftZzZhzHWDdsRXNb";
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+    setShowAll(false);
+  };
 
   const fetchData = async (search) => {
     const response = await fetch(
@@ -18,8 +34,8 @@ function Header() {
       }
     );
     const data = await response.json();
-    setSearchResults(data.data);
-    console.log(data.data);
+    setSearchResults(data);
+    console.log(data);
   };
   const debounceFetchData = useCallback(debounce(fetchData, 500), []);
 
@@ -29,7 +45,7 @@ function Header() {
     setDropdownVisible(true);
     debounceFetchData(value);
   }
-
+  console.log(stores);
   return (
     <>
       <h1 className="font-bold text-4xl text-accent">MatMynt</h1>
@@ -39,6 +55,15 @@ function Header() {
         <p className="text-xl mt-2">Din guide til smartere matshopping</p>
         <p>Scan varekode eller søk etter produkt</p>
       </div>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        product={product}
+        stores={stores}
+        showAll={showAll}
+        setShowAll={setShowAll}
+        data={mainData}
+      />
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -59,12 +84,17 @@ function Header() {
           {dropdownVisible && (
             <div className="relative">
               <div className="absolute z-10  w-full bg-accent text-black shadow-lg  py-2">
-                {searchResults?.length > 0
-                  ? searchResults?.map((item, index) => (
+                {searchResults?.data?.length > 0
+                  ? searchResults?.data?.map((item, index) => (
                       <div
                         onClick={() => {
+                          console.log(item);
+                          setStores(searchResults.data); //this does not work as intended.
                           setSearch("");
                           setDropdownVisible(false);
+                          setProduct(item);
+                          setMainData(item);
+                          openModal();
                         }}
                         key={index}
                         className="px-4 py-2 hover:bg-gray-200 cursor-pointer flex justify-between items-center gap-2 text-center"
@@ -74,7 +104,7 @@ function Header() {
                         <p>{item.current_price},-</p>
                       </div>
                     ))
-                  : "Ingen resultater"}
+                  : ""}
               </div>
             </div>
           )}
