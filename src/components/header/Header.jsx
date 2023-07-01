@@ -1,6 +1,7 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { debounce } from "lodash";
 import Modal from "../main/CustomModal";
+import fetchProductData from "../main/apiHandler";
 
 function Header() {
   const [search, setSearch] = useState("");
@@ -35,7 +36,6 @@ function Header() {
     );
     const data = await response.json();
     setSearchResults(data);
-    console.log(data);
   };
   const debounceFetchData = useCallback(debounce(fetchData, 500), []);
 
@@ -45,7 +45,7 @@ function Header() {
     setDropdownVisible(true);
     debounceFetchData(value);
   }
-  console.log(stores);
+
   return (
     <>
       <h1 className="font-bold text-4xl text-accent">MatMynt</h1>
@@ -76,7 +76,10 @@ function Header() {
             name="search"
             id="search"
             value={search}
-            onChange={handleChange}
+            onChange={(e) => {
+              handleChange(e);
+            }}
+            //FIKS PRISEN SÅNN LAVESTE ER FØRST
             placeholder="Søk etter produkt..."
             className=" bg-primary p-1 text-lg  w-full  text-white border-solid border-b-2 border-white focus:outline-none focus:border-accent"
           />
@@ -87,20 +90,23 @@ function Header() {
                 {searchResults?.data?.length > 0
                   ? searchResults?.data?.map((item, index) => (
                       <div
-                        onClick={() => {
-                          console.log(item);
-                          setStores(searchResults.data); //this does not work as intended.
+                        onClick={async () => {
+                          const data = await fetchProductData(
+                            `products/ean/${item.ean}`
+                          );
                           setSearch("");
                           setDropdownVisible(false);
                           setProduct(item);
                           setMainData(item);
                           openModal();
+                          setStores(data.stores);
                         }}
                         key={index}
                         className="px-4 py-2 hover:bg-gray-200 cursor-pointer flex justify-between items-center gap-2 text-center"
                       >
                         <img src={item.image} alt="" className="w-4" />
                         <p>{item.name}</p>
+
                         <p>{item.current_price},-</p>
                       </div>
                     ))

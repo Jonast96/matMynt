@@ -29,6 +29,7 @@ function Modal({
   const [showPriceHistory, setShowPriceHistory] = useState(
     Array(stores.length).fill(false)
   );
+  console.log(stores);
 
   function formatDate(isoDate) {
     let date = new Date(isoDate);
