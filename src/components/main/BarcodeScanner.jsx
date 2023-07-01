@@ -75,9 +75,9 @@ function BarcodeScanner({ onDetected, running }) {
       // If Quagga is at least 90% certain that it read correctly, then accept the code.
       if (err < 0.1) {
         onDetected(code);
+        Quagga.offDetected();
+        stopScanner();
       }
-      Quagga.offDetected();
-      stopScanner();
     });
   };
 
