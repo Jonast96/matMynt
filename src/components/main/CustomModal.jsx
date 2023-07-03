@@ -29,7 +29,6 @@ function Modal({
   const [showPriceHistory, setShowPriceHistory] = useState(
     Array(stores.length).fill(false)
   );
-  console.log(stores);
 
   function formatDate(isoDate) {
     let date = new Date(isoDate);
@@ -84,9 +83,11 @@ function Modal({
       <div className="customModal">
         <div className="mb-4 flex justify-center items-center gap-4">
           <img className="w-12 " src={product.image} alt="" />
-          <h2 className=" text-xl testing">
-            {product.name ? product.name : "..."}
-          </h2>
+          <div>
+            <h2 className=" text-xl testing">
+              {product.name ? product.name : "Navn ikke funnet"}
+            </h2>
+          </div>
         </div>
         <div className="flex flex-col gap-2 ">
           {storesToShow.map((store, index) => {

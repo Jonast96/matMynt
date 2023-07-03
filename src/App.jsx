@@ -19,10 +19,8 @@ function App() {
 
   return (
     <div className="mx-auto main-app bg-primary text-white max-w-lg pt-2  flex flex-col justify-between">
-      <header className="px-4">
+      <main id="main" className="px-4 gap-5 flex-col flex">
         <Header />
-      </header>
-      <main id="main" className="px-4">
         <Main />
       </main>
       <footer className="">
