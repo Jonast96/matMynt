@@ -1,6 +1,6 @@
 import "./index.css";
 import React from "react";
-import Nav from "./components/nav/Nav";
+import Footer from "./components/nav/Footer";
 import Header from "./components/header/Header";
 import Main from "./components/main/Main";
 
@@ -24,7 +24,7 @@ function App() {
         <Main />
       </main>
       <footer className="">
-        <Nav />
+        <Footer />
       </footer>
     </div>
   );

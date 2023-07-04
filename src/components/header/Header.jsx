@@ -79,7 +79,6 @@ function Header() {
             onChange={(e) => {
               handleChange(e);
             }}
-            //FIKS PRISEN SÅNN LAVESTE ER FØRST
             placeholder="Søk etter produkt..."
             className=" bg-primary p-1 text-lg  w-full  text-white border-solid border-b-2 border-white focus:outline-none focus:border-accent"
           />
