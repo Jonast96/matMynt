@@ -4,6 +4,10 @@ import Footer from "./components/nav/Footer";
 import Search from "./components/header/Search";
 import Main from "./components/main/Main";
 import Nav from "./components/header/Nav";
+
+import { hotjar } from "react-hotjar";
+hotjar.initialize(3561950, 6);
+
 function App() {
   function setVh() {
     let vh = window.innerHeight * 0.01;
