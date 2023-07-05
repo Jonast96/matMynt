@@ -11,3 +11,7 @@
 .main-app {
   height: calc(100 * var(--vh));
 }
+
+::-webkit-scrollbar {
+  display: none;
+}

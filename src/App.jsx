@@ -18,8 +18,8 @@ function App() {
   window.addEventListener("orientationchange", setVh);
 
   return (
-    <div className="mx-auto main-app bg-primary text-white max-w-lg pt-2  flex flex-col justify-between">
-      <main id="main" className="px-4 gap-5 flex-col flex">
+    <div className="mx-auto main-app bg-primary text-white max-w-lg   flex flex-col justify-between">
+      <main id="main" className=" gap-5 flex-col flex">
         <Header />
         <Main />
       </main>

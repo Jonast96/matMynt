@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { debounce } from "lodash";
 import Modal from "../main/CustomModal";
 import fetchProductData from "../main/apiHandler";
+import logo from "../../..//public/icons/logo_transparent.png";
 
 function Header() {
   const [search, setSearch] = useState("");
@@ -26,7 +27,7 @@ function Header() {
 
   const fetchData = async (search) => {
     const response = await fetch(
-      `https://kassal.app/api/v1/products?search=${search}`,
+      `https://kassal.app/api/v1/products?search=${search}&size=20`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -48,7 +49,10 @@ function Header() {
 
   return (
     <>
-      <h1 className="font-bold text-4xl text-accent">MatMynt 1.0</h1>
+      <div className="bg-white  flex place-items-center">
+        <img className="w-24" src={logo} alt="" />
+        <h1 className="font-bold text-2xl text-primary">MatMynt 1.0</h1>
+      </div>
 
       <div className="text-center mt-24">
         <h4 className="text-2xl font-medium">Velkommen til MatMynt</h4>
@@ -84,8 +88,8 @@ function Header() {
           />
 
           {dropdownVisible && (
-            <div className="relative">
-              <div className="absolute z-10  w-full bg-accent text-black shadow-lg  py-2">
+            <div className="relative ">
+              <div className="absolute hide-scrollbar top-0 left-0 z-10  h-96 overflow-y-scroll  bg-white text-black shadow-lg  py-2">
                 {searchResults?.data?.length > 0
                   ? searchResults?.data?.map((item, index) => (
                       <div
@@ -104,9 +108,8 @@ function Header() {
                         className="px-4 py-2 hover:bg-gray-200 cursor-pointer flex justify-between items-center gap-2 text-center"
                       >
                         <img src={item.image} alt="" className="w-4" />
-                        <p>{item.name}</p>
-
-                        <p>{item.current_price},-</p>
+                        <p className="text-primary">{item.name}</p>
+                        <p className="text-primary">{item.current_price},-</p>
                       </div>
                     ))
                   : ""}

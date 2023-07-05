@@ -91,10 +91,13 @@ function Modal({
         </div>
         <div className="flex flex-col gap-2 ">
           {storesToShow.map((store, index) => {
-            const formattedData = store.price_history.map((item) => ({
-              ...item,
-              date: formatDate(item.date),
-            }));
+            const formattedData = store.price_history
+              .slice()
+              .map((item) => ({
+                ...item,
+                date: formatDate(item.date),
+              }))
+              .reverse();
 
             return (
               <div
@@ -178,7 +181,7 @@ function Modal({
           className="bg-white rounded p-2 mt-4"
         >
           <div className="flex justify-between items-center">
-            <h3 className="underline cursor-pointer text-secondary font-semibold ">
+            <h3 className="underline cursor-pointer text-primary text-lg font-semibold ">
               Næringsinnhold per 100g
             </h3>
             <FontAwesomeIcon icon={faArrowDown} />
@@ -203,7 +206,7 @@ function Modal({
           className="bg-white rounded p-2"
         >
           <div className="flex justify-between items-center">
-            <h3 className="underline cursor-pointer text-secondary font-semibold ">
+            <h3 className="underline cursor-pointer text-primary text-lg font-semibold ">
               Allergener
             </h3>
             <FontAwesomeIcon icon={faArrowDown} />

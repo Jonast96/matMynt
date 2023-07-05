@@ -7,8 +7,21 @@ export default {
       primary: "#101119",
       secondary: "#656d9a",
       accent: "#5b628b",
-      white: "#ecedf3",
+      white: "#FAF9F6",
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addComponents }) {
+      addComponents({
+        ".hide-scrollbar": {
+          "@apply overflow-auto": {},
+          "::-webkit-scrollbar": {
+            display: "none",
+          },
+          "-ms-overflow-style": "none",
+          "scrollbar-width": "none",
+        },
+      });
+    },
+  ],
 };

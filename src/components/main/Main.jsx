@@ -41,7 +41,7 @@ function Main() {
   };
 
   return (
-    <div>
+    <div className="px-4">
       <BarcodeScanner onDetected={onDetected} running={isScannerRunning} />
 
       <Modal
