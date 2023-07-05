@@ -2,9 +2,8 @@ import React, { useState, useCallback, useEffect } from "react";
 import { debounce } from "lodash";
 import Modal from "../main/CustomModal";
 import fetchProductData from "../main/apiHandler";
-import logo from "../../..//public/icons/logo_transparent.png";
 
-function Header() {
+function Search() {
   const [search, setSearch] = useState("");
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
@@ -48,13 +47,8 @@ function Header() {
   }
 
   return (
-    <>
-      <div className="bg-white  flex place-items-center">
-        <img className="w-24" src={logo} alt="" />
-        <h1 className="font-bold text-2xl text-primary">MatMynt 1.0</h1>
-      </div>
-
-      <div className="text-center mt-24">
+    <div className="flex flex-col">
+      <div className="text-center">
         <h4 className="text-2xl font-medium">Velkommen til MatMynt</h4>
         <p className="text-xl mt-2">Din guide til smartere matshopping</p>
         <p>Scan varekode eller søk etter produkt</p>
@@ -118,8 +112,8 @@ function Header() {
           )}
         </div>
       </form>
-    </>
+    </div>
   );
 }
 
-export default Header;
+export default Search;

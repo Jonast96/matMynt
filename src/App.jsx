@@ -1,9 +1,9 @@
 import "./index.css";
 import React from "react";
 import Footer from "./components/nav/Footer";
-import Header from "./components/header/Header";
+import Search from "./components/header/Search";
 import Main from "./components/main/Main";
-
+import Nav from "./components/header/Nav";
 function App() {
   function setVh() {
     let vh = window.innerHeight * 0.01;
@@ -18,14 +18,19 @@ function App() {
   window.addEventListener("orientationchange", setVh);
 
   return (
-    <div className="mx-auto main-app bg-primary text-white max-w-lg   flex flex-col justify-between">
-      <main id="main" className=" gap-5 flex-col flex">
-        <Header />
-        <Main />
-      </main>
-      <footer className="">
-        <Footer />
-      </footer>
+    <div className="bg-primary">
+      <div className="mx-auto main-app  text-white max-w-2xl flex flex-col justify-between">
+        <header>
+          <Nav />
+        </header>
+        <main id="main" className=" gap-5 flex-col flex">
+          <Search />
+          <Main />
+        </main>
+        <footer className="">
+          <Footer />
+        </footer>
+      </div>
     </div>
   );
 }

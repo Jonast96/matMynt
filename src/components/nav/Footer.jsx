@@ -1,6 +1,6 @@
 function Footer() {
   return (
-    <footer className="p-5 bg-white w-full flex justify-center">
+    <footer className="p-2 bg-white w-full flex justify-center">
       <div className="text-center">
         <h4 className="text-primary font-semibold">
           Lagd av:{" "}
