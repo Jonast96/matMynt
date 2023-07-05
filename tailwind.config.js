@@ -4,11 +4,24 @@ export default {
   theme: {
     extend: {},
     colors: {
-      primary: "#01231E",
-      secondary: "#A9D9A0",
-      accent: "#A0A9D9",
-      white: "#FFFFFF",
+      primary: "#101119",
+      secondary: "#656d9a",
+      accent: "#5b628b",
+      white: "#FAF9F6",
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addComponents }) {
+      addComponents({
+        ".hide-scrollbar": {
+          "@apply overflow-auto": {},
+          "::-webkit-scrollbar": {
+            display: "none",
+          },
+          "-ms-overflow-style": "none",
+          "scrollbar-width": "none",
+        },
+      });
+    },
+  ],
 };
